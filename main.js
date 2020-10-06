@@ -31,8 +31,9 @@ form.submit2.addEventListener('click', () => {
     axios({
         method: 'post',
         url: base_url + '/login?' + `email=${email}&password=${password}`,
-    }).then(response=> console.log(response))
-    check_token();
+    }).then(function (result){
+        check_token(result.data.body.access_token, result.data.body.refresh_token)
+    })
 });
 
 function check_token(access, refresh){
@@ -52,6 +53,6 @@ function update_token(data, refresh_token){
             method: 'post',
             url: base_url + `/refresh`,
             headers:{Authorization: `Bearer ${refresh_token}`}})
-            .then(function (result){check_token(result.data.body.access_token)})
+            .then(function (result){check_token(result.data.body.access_token,  result.data.body.refresh_token)})
     }
 }
